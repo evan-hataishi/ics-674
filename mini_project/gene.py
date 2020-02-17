@@ -173,9 +173,19 @@ class Gene():
     @staticmethod
     def crossover(p1, p2):
         length = min(p1.get_path_length(), p2.get_path_length())
-        split = random.randint(0, length)
-        c1_path = p1.get_path()[0:split] + p2.get_path()[split:length]
-        c2_path = p2.get_path()[0:split] + p1.get_path()[split:length]
-        grid_size = (len(c1_path) // 2) + 1
+        # split = random.randint(0, length)
+        # c1_path = p1.get_path()[0:split] + p2.get_path()[split:length]
+        # c2_path = p2.get_path()[0:split] + p1.get_path()[split:length]
+        child_path = []
+        for i in range(length):
+            child_path.append(random.choice([p1.get_path()[i], p2.get_path()[i]]))
+        grid_size = (length // 2) + 1
         # return [Gene(grid_size, c1_path), Gene(grid_size, c2_path)]
-        return [Gene(grid_size, c1_path)]
+        return [Gene(grid_size, child_path)]
+
+    def mutate(self):
+        prob = random.uniform(0,1)
+        if prob <= 0.1:
+            self.__path = self.__random_path()
+            self.__fitness = self.calc_fitness()
+        return self
