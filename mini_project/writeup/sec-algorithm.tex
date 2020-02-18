@@ -8,6 +8,7 @@
     \begin{equation*}
         f(x, y, \hat{x}, \hat{y}) = \sum_{i=1}^{2N-2} \sqrt{(x_{i} - \hat{x}_{i})^2 + (y_i - \hat{y}_{i})^2}
     \end{equation*}
+    Therefore, we aim to minimize the fitness value, with \textbf{zero} being the optimal fitness value.
     \item[Variation Operators] Recombination is done by randomly picking a movement type between two paths at \textbf{every} step to form a single new path of length $2N-2$. Recombination is only done using parents in the top 50\% of fitness. Mutation has a 10\% chance of occurring on any path. The path is simply randomly generated from scratch if selected for mutation.
     \item[Selection Operator] We use elitism to pick the top 30\% of a generation to move on automatically to the next generation. The other 70\% is formed from recombination.
 \end{description}

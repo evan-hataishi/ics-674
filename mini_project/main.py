@@ -1,43 +1,54 @@
-from gene import Gene
+from genome import Genome
 import pprint
 import random
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import json
 
 GRID_SIZE = 100
 POPULATION = 30
-GENERATIONS = 1500
+GENERATIONS = 2000
+SELECT_PERC = 0.3
 
 def ga():
-    agents = [Gene(GRID_SIZE) for _ in range(POPULATION)]
-    res = []
+    scores = []
+    best = None
+    average = None
+    worst = None
+    data = {}
+
+    agents = [Genome(GRID_SIZE) for _ in range(POPULATION)]
     for generation in range(GENERATIONS):
-        print("Generation: %d Population: %d" % (generation, len(agents)))
+        print("Genomeration: %d Population: %d" % (generation, len(agents)))
 
         fitness = [- x.get_fitness() for x in agents]
 
         stat = (max(fitness), np.mean(fitness), min(fitness))
-        res.append(stat)
+
+        scores.append(stat)
+
         print("Best: %.2f Avg: %.2f Worst: %.2f" % stat)
-        # fitness calculated automatically
+
+        # Fitness pre-calculated adn stored in genome
         # selection
         next_generation = selection(agents)
         # crossover
         next_generation += crossover(agents)
-        # print(min([x.get_fitness() for x in next_generation]))
         # mutation
         next_generation = [agent.mutate() for agent in next_generation]
 
-        agents = next_generation
+        agents = sorted(next_generation, key=lambda x: x.get_fitness())
 
-        best = min(agents, key=lambda x: x.get_fitness())
+        best = agents[0]
+        average = agents[int(POPULATION/2)]
+        worst = agents[-1]
 
         # print(np.mean([x.get_fitness() for x in agents]))
         # pprint.pprint(best.array_representation())
 
-        if any(agent.get_fitness() == 0 for agent in agents):
+        if best.get_fitness() == 0:
             print("Found optimal!")
             break
 
@@ -46,43 +57,40 @@ def ga():
     generations = [x for x in range(GENERATIONS)]
     data_preproc = pd.DataFrame({
         'Generation': generations,
-        'Best': [x[0] for x in res],
-        'Average': [x[1] for x in res],
-        'Worst': [x[2] for x in res]})
+        'Best': [x[0] for x in scores],
+        'Average': [x[1] for x in scores],
+        'Worst': [x[2] for x in scores]})
 
     sns.lineplot(x='Generation', y='value', hue='variable',
                  data=pd.melt(data_preproc[data_preproc.index % 5 == 0], ['Generation']))
     plt.show()
 
+    data['scores'] = scores
+    data['best'] = best.array_representation()
+    data['average'] = average.array_representation()
+    data['worst'] = worst.array_representation()
+
+    with open('data.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
 
 def selection(agents):
     agents = sorted(agents, key=lambda x: x.get_fitness())
-    s = int((10*POPULATION)/100)
-    return agents[:10]
+    s = int(SELECT_PERC*POPULATION)
+    return agents[:s]
 
 def crossover(agents):
     next_generation = []
     agents = sorted(agents, key=lambda x: x.get_fitness())
     # random.shuffle(agents)
-    s = int((90*POPULATION)/100)
-    for _ in range(20):
+    s = int((1-SELECT_PERC)*POPULATION)
+    for _ in range(s):
         p1 = random.choice(agents)
         p2 = random.choice(agents)
-        next_generation += Gene.crossover(p1, p2)
+        next_generation += Genome.crossover(p1, p2)
     return next_generation
 
 def main():
-    # g = Gene(GRID_SIZE)
-    # print(str(g))
-    # pprint.pprint(g.array_representation())
-    # pprint.pprint(g.array_representation())
-    # Gene.print_grid(GRID_SIZE, g.get_path())
-    # print(g.get_optimal_path())
-    # Gene.print_grid(GRID_SIZE, g.get_optimal_path())
-    # print(g.calc_fitness())
     ga()
-
-
 
 if __name__ == '__main__':
     main()

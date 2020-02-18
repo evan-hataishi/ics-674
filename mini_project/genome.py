@@ -2,7 +2,7 @@ import random
 import pprint
 from math import sqrt
 
-class Gene():
+class Genome():
 
     # right, up, diagonal, none
     moves = ('R', 'U', 'D', None)
@@ -18,19 +18,10 @@ class Gene():
     def __init__(self, GRID_SIZE, path=None):
         self.__grid_size  = GRID_SIZE
         self.__path_length = (GRID_SIZE - 1) * 2
-        self.__path = Gene.restrict_path(path) if path else self.__random_path()
+        self.__path = Genome.restrict_path(path) if path else self.__random_path()
         self.__optimal_path = self.__find_optimal_path()
         self.__optimal_path_points = self.__find_optimal_path_points()
         self.__fitness = self.calc_fitness()
-
-
-    # def __init__(self, GRID_SIZE, path):
-    #     self.__grid_size  = GRID_SIZE
-    #     self.__path_length = (GRID_SIZE - 1) * 2
-    #     self.__path = Gene.restrict_path(path)
-    #     self.__optimal_path = self.__find_optimal_path()
-    #     self.__optimal_path_points = self.__find_optimal_path_points()
-    #     self.__fitness = self.calc_fitness()
 
 
     def __str__(self):
@@ -92,7 +83,7 @@ class Gene():
                 # This step will take us out of the grid. Break out of loop here.
                 break
             step += 1
-        return Gene.__fill_path(path, grid_size, step, x_pos, y_pos)
+        return Genome.__fill_path(path, grid_size, step, x_pos, y_pos)
 
 
     @staticmethod
@@ -119,7 +110,7 @@ class Gene():
                 curr_x += 1
             if move == 'U' or move == 'D':
                 curr_y += 1
-            dist = Gene.__distance((curr_x, curr_y), self.__optimal_path_points[i])
+            dist = Genome.__distance((curr_x, curr_y), self.__optimal_path_points[i])
             fitness += dist
             # print(dist, (curr_x, curr_y), self.__optimal_path_points[i])
         return fitness
@@ -132,7 +123,7 @@ class Gene():
 
     def __random_path(self):
         path = [random.choice(self.moves) for _ in range(self.__path_length)]
-        return Gene.restrict_path(path)
+        return Genome.restrict_path(path)
 
 
     def __find_optimal_path(self):
@@ -180,8 +171,8 @@ class Gene():
         for i in range(length):
             child_path.append(random.choice([p1.get_path()[i], p2.get_path()[i]]))
         grid_size = (length // 2) + 1
-        # return [Gene(grid_size, c1_path), Gene(grid_size, c2_path)]
-        return [Gene(grid_size, child_path)]
+        # return [Genome(grid_size, c1_path), Genome(grid_size, c2_path)]
+        return [Genome(grid_size, child_path)]
 
     def mutate(self):
         prob = random.uniform(0,1)
