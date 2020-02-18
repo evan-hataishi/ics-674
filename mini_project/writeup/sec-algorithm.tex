@@ -1,3 +1,15 @@
 
 \section{Evolutionary Algorithm}
-search space blah blah blah
+
+\begin{description}
+    \item[Search Space] All valid \footnote{Paths cannot go outside a matrices dimensions} sequences of up, right, diagonal and none movements.
+    \item[Representation] A $2N - 2$ length \footnote{A path will be exactly $2N - 2$ moves when only upward and rightward movements are chosen. This implies that not all paths will reach the destination if a ``none'' step is used, and paths containing diagonals may finish early.} vector containing elements ``U'', ``R'', ``D'', and ``N''.
+    \item[Objective Function] Let $x$ be the sequence of $2N - 2$ numbers representing a path's $x$-coordinate at every step, and $y$ be the sequence of $2N - 2$ numbers representing a path's $y$-coordinate at every step. Let $\hat{x}$ be the optimal sequence of $2N - 2$ $x$-coordinates s.t. $\hat{x} = 1,2,\dots,N-1$ and $\hat{y}$ be the optimal sequence of $2N - 2$ $y$-coordinates s.t. $\hat{y} = 1,2,\dots,N-1$.
+    \begin{equation*}
+        f(x, y, \hat{x}, \hat{y}) = \sum_{i=1}^{2N-2} \sqrt{(x_{i} - \hat{x}_{i})^2 + (y_i - \hat{y}_{i})^2}
+    \end{equation*}
+    \item[Variation Operators] Recombination is done by randomly picking a movement type between two paths at \textbf{every} step to form a single new path of length $2N-2$. Recombination is only done using parents in the top 50\% of fitness. Mutation has a 10\% chance of occurring on any path. The path is simply randomly generated from scratch if selected for mutation.
+    \item[Selection Operator] We use elitism to pick the top 30\% of a generation to move on automatically to the next generation. The other 70\% is formed from recombination.
+\end{description}
+
+All paths are generated randomly at the start. If a movement in a path will take the path outside the grid, we simply fill the rest of the path with up or right movements in the direction of $D$. For example, if a path reaches the top of the grid, we fill the rest of the path with right movements. If a path reaches the right edge of the grid, we fill the rest of the path with up movements. If a path reaches $D$ prior to $2N-2$ movements, we fill the rest with no movements. Therefore, the optimal path will have $N-1$ ``D'' movements followed by $2N-2-N-1=N-3$ ``N'' movements.
