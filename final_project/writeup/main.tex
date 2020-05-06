@@ -1,0 +1,90 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}\geometry{margin=1in}
+\usepackage{amsmath, amssymb, amscd, amsthm, amsfonts}
+\usepackage{todonotes, xspace}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{multirow}
+
+\usepackage{algorithm,algpseudocode}
+% \usepackage{graphicx}
+% \usepackage{hyperref}
+
+\usepackage{xcolor}
+\usepackage{listings}
+% \usepackage{hyperref}
+\usepackage[implicit=false]{hyperref}
+\usepackage{courier}
+
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.58,0,0.82}
+\definecolor{backgroundColour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{CStyle}{
+    backgroundcolor=\color{backgroundColour},
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    language=C
+}
+
+
+\newcommand{\EH}[2][inline]{\todo[color=orange!30,#1]{\sf \small\textbf{TODO:} #2\normalsize}\xspace}
+
+\newcommand{\auton}{\textsc{FindTracklets}\xspace}
+
+
+% \oddsidemargin 0pt
+% \evensidemargin 0pt
+% \marginparwidth 40pt
+% \marginparsep 10pt
+% \topmargin -20pt
+% \headsep 10pt
+% \textheight 8.7in
+% \textwidth 6.65in
+\linespread{1}
+
+\title{Final Project: Optimal Binary Search Tree}
+
+\author{Evan Hataishi\\ \small ICS 674: Evolutionary Computation\\ \small Prof. L. Altenberg}
+
+\date{\small May 8, 2020}
+
+\begin{document}
+
+\maketitle
+
+% \begin{abstract}
+%
+%     Given time series detections of moving objects in space, astronomers would like to identify asteroids and link those detections into a linear path within and between nights. Current algorithms use a series of 3-dimensional orthogonal range queries to link neighboring observations into such paths. A fast, efficient, and scalable data structure is needed to reduce the cost of these queries. In this work, we describe the currently used software which uses kd-trees. We then implement the theoretically faster range tree in an attempt to improve the overall performance. Using the same asteroid detection and linking software, we benchmark the kd-tree against our range tree implementation. We find that although just as accurate, the range tree performs much worse in practice for both tree construction time and query time compared to the kd-tree.
+%
+% \end{abstract}
+
+\input{sec-introduction}
+
+\input{sec-algorithm}
+
+\input{sec-code}
+
+\input{sec-results}
+
+% \input{sec-conclusion}
+
+
+% \bibliographystyle{alpha}
+% \bibliography{references}
+
+\end{document}

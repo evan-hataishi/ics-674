@@ -1,0 +1,17 @@
+
+\section{Code}
+
+To avoid having code within this report, all code used for this project can be found on my GitHub in a public repository~\footnote{All related code will not be modified after February 18, 2020 at 12:00 PM. This is verifiable via commit history.}: \url{https://github.com/evan-hataishi/ics-674/tree/master/mini_project}. \texttt{genome.py} contains a class \texttt{Genome}. All methods related to my genome representation are implemented within that class. \texttt{main.py} is a driver and runs the genetic algorithm. Within \texttt{main.py}, we first define some hyper-parameters: \texttt{GRID\_SIZE=100, POPULATION=30, GENERATIONS=2000, SELECT\_PERC=0.3}. The agents are then initialized and evolved within the \texttt{ga()} function.
+
+\subsection{Search Space Representation}
+
+ \texttt{Genome} has an attribute called \texttt{\_\_path}, which represents the sequence of up, down, diagonal, and none movements that genome makes. This path is initialized randomly within the genome constructor: \texttt{\_\_init\_\_(self, GRID\_SIZE, path=None)}. After validating the path, the genome's fitness is also calculated by the \texttt{calc\_fitness(self)} method.
+
+ \subsection{Variation Operator Encoding}
+Crossover is implemented as a static method: \texttt{crossover(p1, p2)}. Given two parents, it produces a single child by picking each step randomly between p1 and p2's paths. Mutation is implemented in the \texttt{mutate(self)} method. It simply generates a new random path.
+
+ \subsection{Selection Operator Encoding}
+Selection is done in \texttt{main.py}. All agents are sorted by fitness, and the top 30\% are selected to move on to the next generation.
+
+ \subsection{Termination Criterion}
+We only terminate when the optimal path (fitness=0) is reached. This does not typically occur within the first 2000 generations.
