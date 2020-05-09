@@ -6,7 +6,7 @@ default: $(MAIN).pdf
 
 $(MAIN).pdf: $(TEX_SOURCES) $(BIB_SOURCES)
 	pdflatex $(MAIN)
-	# bibtex $(MAIN)
+	bibtex $(MAIN)
 	pdflatex $(MAIN)
 	pdflatex $(MAIN)
 

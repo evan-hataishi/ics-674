@@ -2,6 +2,10 @@ from BST import BST
 from BST import optBSTCost
 import random
 import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import json
 
 POP_SIZE = 45
 GENERATIONS = 500
@@ -42,12 +46,20 @@ def ga():
 
     optimal_cost = optBSTCost([x[0] for x in data], [x[1] for x in data], len(data))
 
+    scores = []
+    best = None
+    average = None
+    worst = None
+    data = {}
+
     for generation in range(GENERATIONS):
         print("Generation: %d Population: %d" % (generation, len(agents)))
 
         fitness = [- x.cost() for x in agents]
 
         stat = (max(fitness), np.mean(fitness), min(fitness))
+
+        scores.append(stat)
 
         print("Best: %.2f Avg: %.2f Worst: %.2f" % stat)
 
@@ -62,10 +74,32 @@ def ga():
         # mutation
         next_generation = [agent.mutate() for agent in next_generation]
 
-        agents = next_generation
+        agents = sorted(next_generation, key=lambda x: x.cost())
+
+        best = agents[0]
+        average = agents[int(POP_SIZE/2)]
+        worst = agents[-1]
 
     print("Optimal BST Cost: %d" % optimal_cost)
 
+    generations = [x for x in range(GENERATIONS)]
+    data_preproc = pd.DataFrame({
+        'Generation': generations,
+        'Best': [x[0] for x in scores],
+        'Average': [x[1] for x in scores],
+        'Worst': [x[2] for x in scores]})
+
+    sns.lineplot(x='Generation', y='value', hue='variable',
+                 data=pd.melt(data_preproc, ['Generation']))
+    plt.show()
+
+    data['scores'] = scores
+    data['best'] = best.array_representation()
+    data['average'] = average.array_representation()
+    data['worst'] = worst.array_representation()
+
+    with open('data.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
 
 def main():
     # data = generate_data()
