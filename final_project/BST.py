@@ -1,12 +1,14 @@
 import random
+import math
 
 class BST():
 
     root = None
     # Keep track of nodes by order of insertion
-    nodes = []
+    nodes = None
 
     def __init__(self, data):
+        self.nodes = []
         self.insert_nodes(data)
 
     def __str__(self):
@@ -30,6 +32,48 @@ class BST():
 
     def cost(self):
         return cost(self.root, 1)
+
+    def crossover(a, b):
+        a_data = a.raw_data()
+        b_data = b.raw_data()
+        child_data = BST.merge_data(a_data, b_data)
+        return BST(child_data)
+
+    def raw_data(self):
+        data = []
+        for node in self.nodes:
+            data.append((node.key, node.freq))
+        return data
+
+    def merge_data(a, b):
+        d = {}
+        for i, item in enumerate(a):
+            d[item] = [i, None]
+        for i, item in enumerate(b):
+            d[item][1] = i
+        tmp = [None] * len(a)
+        for k, v in d.items():
+            index = random.choice(v)
+            if tmp[index]:
+                tmp[index].append(k)
+            else:
+                tmp[index] = [k]
+        return BST.flatten(tmp)
+
+    def flatten(l):
+        res = []
+        for x in l:
+            if x:
+                res += x
+        return res
+
+    def mutate(self):
+        prob = random.uniform(0,1)
+        if prob <= 0.2:
+            tmp = self.raw_data()
+            random.shuffle(tmp)
+            return BST(tmp)
+        return self
 
     class TreeNode():
 
@@ -75,3 +119,33 @@ def cost(root, level):
     left = cost(root.left, level+1)
     right = cost(root.right, level+1)
     return (root.freq * level) + left + right
+
+# https://www.geeksforgeeks.org/optimal-binary-search-tree-dp-24/
+def optBSTCost(keys, freq, n):
+    cost = [[0 for x in range(n)]
+               for y in range(n)]
+    for i in range(n):
+        cost[i][i] = freq[i]
+    for L in range(2, n + 1):
+        for i in range(n - L + 2):
+            j = i + L - 1
+            if i >= n or j >= n:
+                break
+            cost[i][j] = math.inf
+
+            for r in range(i, j + 1):
+                c = 0
+                if (r > i):
+                    c += cost[i][r - 1]
+                if (r < j):
+                    c += cost[r + 1][j]
+                c += sum(freq, i, j)
+                if (c < cost[i][j]):
+                    cost[i][j] = c
+    return cost[0][n - 1]
+
+def sum(freq, i, j):
+    s = 0
+    for k in range(i, j + 1):
+        s += freq[k]
+    return s
