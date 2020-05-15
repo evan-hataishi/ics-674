@@ -3,15 +3,17 @@
 \label{sec-algorithm}
 
 \begin{description}
-    \item[Search Space] All valid BST structures.
-    \item[Representation] An $N$ node BST constructed from a set of $N$ keys and a corresponding set of $N$ frequencies.
-    \item[Objective Function] Let $k$ be the set of $N$ keys, and $f$ be the set of $N$ frequencies representing a BST. The expected cost of the BST can be calculated as follows:
+    \item[Search Space] All valid BST structures given a set of keys.
+    \item[Representation] An $N$ node BST constructed from a set of $N$ keys and a corresponding set of $N$ frequencies. All BSTs in the search space have the same keys with corresponding frequencies.
+    \item[Objective Function] Let $k$ be the set of $N$ keys and $f$ be the set of $N$ frequencies. The expected cost (and, consequently, fitness function) of the BST is calculated as follows:
     \begin{equation*}
         f(k, f) = \sum_{i=1}^{N} (depth(k_i) + 1) \times f_i.
     \end{equation*}
     Therefore, we aim to minimize the expected cost, which will be some non-zero value depending on keys and frequencies.
-    \item[Variation Operators] Recombination is done by merging two trees and removing duplicate nodes. Recombination is only done using parents in the top 50\% of fitness. Mutation has a 10\% chance of occurring on any tree. The keys are simply shuffled and inserted to generate a new BST structure.
-    \item[Selection Operator] We use elitism to pick the top 30\% of a generation to move on automatically to the next generation. The other 70\% is formed from recombination.
+    \item[Selection Operator] We use elitism to pick the top 30\% of a generation of trees to move on automatically to the next generation. The other 70\% is formed from recombination.
+    \item[Recombination Operator] Only the top 50\% fittest BSTs are used for recombination. Recombination is done by randomly picking two trees to combine into a single new tree. This process is described in the following paragraph.
+    \item[Mutation Operator] Mutation has a 10\% chance of occurring on any tree being moved on to a subsequent generation after selection and recombination. The keys are simply shuffled and re-inserted to generate a new BST structure.
 \end{description}
 
-Keys are unique and randomly generated at the start. Frequencies are picked randomly between 1 and 10 (inclusive) for each key. Recombination is difficult, for merging trees can be tricky. While merging, the resulting tree must maintain the same set of keys with no duplicates. To do this, we take the set of keys for two trees (ordered by insertion order) and randomly take the index from one of the key pairs. We then ``flatten'' the list to obtain a new list of all the keys and no duplicates.
+\subsection{Recombination}
+The main novelty of this algorithm is the way in which trees do recombination. We first reduce each tree to its original list of keys. The list of keys is ordered by insertion (to the BST) order. Afterall, the tree structure is directly dependent on the order of insertion of the keys. Given the two lists of keys, we must merge the lists and remove all duplicates, so the resulting list maintains the same original set of keys. This is done based on the index of each key. Given two lists of keys $x$ and $y$, we determine a \emph{new} index for every key by randomly choosing between the key's respective index in $x$ and respective index in $y$. Specifically, if key $k_1$ is at index 3 in $x$ and at index 7 in $y$, then $k_1$ will be inserted into the ``recombined'' list at either index 3 or index 7. In cases where different keys are chosen to be inserted at the same index, they simply get inserted subsequently.
