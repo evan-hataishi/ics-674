@@ -1,0 +1,7 @@
+
+\section{Conclusion}
+
+We have proposed an evolutionary approach for constructing near-optimal binary search trees. Like some of the previous work discussed in Section~\ref{sec-relatedwork}, we use classical evolutionary techniques to setup the problem. The novelty of the algorithm proposed in this work is the way in which crossover is implemented. Rather than attempting to combine two BSTs based directly on their structures, we consider reducing each BST to a list of keys sorted by insertion order then doing crossover. We find that the algorithm converges fairly quickly (within a few hundred generations) and is able to construct a near-optimal BST.
+
+\subsection{Future Work}
+We can propose two main directions for future work. The first is to tune the algorithm parameters in the hopes of seeing slightly better convergence. A more major direction is to reconsider the way in which crossover is implemented.
