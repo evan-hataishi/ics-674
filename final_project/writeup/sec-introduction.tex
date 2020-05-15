@@ -1,5 +1,6 @@
 
 \section{Introduction}
+\label{sec-introduction}
 
 Finding the optimal Binary Search Tree (BST) is a somewhat classical programming problem. Given a set of keys and a probability that each key will be looked up i.e. frequency, the optimal BST is structured s.t. the expected search time over all keys is minimized. The expected cost of searching for any arbitrary key is $frequency \times (depth + 1)$. The expected search time of the entire BST is simply the sum of the search costs of all keys. Specifically, the goal is to construct a BST that minimizes the expected search time, while maintaining BST properties given the key values. Thus, it is preferable to have keys with higher frequencies at a shorter depth. Figure~\ref{fig:opt-bst} shows 5 different BSTs that can be constructed given a set of keys (value row).
 
