@@ -7,7 +7,7 @@
     \item[Representation] An $N$ node BST constructed from a set of $N$ keys and a corresponding set of $N$ frequencies.
     \item[Objective Function] Let $k$ be the set of $N$ keys, and $f$ be the set of $N$ frequencies representing a BST. The expected cost of the BST can be calculated as follows:
     \begin{equation*}
-        f(k, f) = \sum_{i=1}^{N} depth(k_i + 1) \times f_i.
+        f(k, f) = \sum_{i=1}^{N} (depth(k_i) + 1) \times f_i.
     \end{equation*}
     Therefore, we aim to minimize the expected cost, which will be some non-zero value depending on keys and frequencies.
     \item[Variation Operators] Recombination is done by merging two trees and removing duplicate nodes. Recombination is only done using parents in the top 50\% of fitness. Mutation has a 10\% chance of occurring on any tree. The keys are simply shuffled and inserted to generate a new BST structure.
