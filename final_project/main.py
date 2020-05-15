@@ -8,15 +8,15 @@ import matplotlib.pyplot as plt
 import json
 
 POP_SIZE = 45
-GENERATIONS = 500
+GENERATIONS = 300
 SELECT_PERC = 0.3
 
-TREE_SIZE = 50
+TREE_SIZE = 100
 
 def generate_data():
     keys = [x for x in range(TREE_SIZE)]
     random.shuffle(keys)
-    freqs = [random.randint(1, 10) for x in range(TREE_SIZE)]
+    freqs = [random.randint(0, 10) for x in range(TREE_SIZE)]
     return [x for x in zip(keys, freqs)]
 
 def generate_population(data):
@@ -76,30 +76,31 @@ def ga():
 
         agents = sorted(next_generation, key=lambda x: x.cost())
 
-        best = agents[0]
-        average = agents[int(POP_SIZE/2)]
-        worst = agents[-1]
+        # best = agents[0]
+        # average = agents[int(POP_SIZE/2)]
+        # worst = agents[-1]
 
     print("Optimal BST Cost: %d" % optimal_cost)
 
-    generations = [x for x in range(GENERATIONS)]
-    data_preproc = pd.DataFrame({
-        'Generation': generations,
-        'Best': [x[0] for x in scores],
-        'Average': [x[1] for x in scores],
-        'Worst': [x[2] for x in scores]})
+    # Display plot
+    # generations = [x for x in range(GENERATIONS)]
+    # data_preproc = pd.DataFrame({
+    #     'Generation': generations,
+    #     'Optimal': [- optimal_cost for x in scores],
+    #     'Best': [x[0] for x in scores],
+    #     'Average': [x[1] for x in scores],
+    #     'Worst': [x[2] for x in scores]})
+    #
+    # sns.lineplot(x='Generation', y='value', hue='variable',
+    #              data=pd.melt(data_preproc, ['Generation']))
+    # plt.show()
 
-    sns.lineplot(x='Generation', y='value', hue='variable',
-                 data=pd.melt(data_preproc, ['Generation']))
-    plt.show()
-
-    data['scores'] = scores
-    data['best'] = best.array_representation()
-    data['average'] = average.array_representation()
-    data['worst'] = worst.array_representation()
-
-    with open('data.json', 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+    # Save data to json
+    # data['scores'] = scores
+    # data['optimal'] = optimal_cost
+    #
+    # with open('data.json', 'w', encoding='utf-8') as f:
+    #     json.dump(data, f, ensure_ascii=False, indent=4)
 
 def main():
     # data = generate_data()

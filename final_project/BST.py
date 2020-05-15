@@ -69,7 +69,7 @@ class BST():
 
     def mutate(self):
         prob = random.uniform(0,1)
-        if prob <= 0.2:
+        if prob <= 0.1:
             tmp = self.raw_data()
             random.shuffle(tmp)
             return BST(tmp)
