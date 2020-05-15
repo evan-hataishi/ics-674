@@ -1,11 +1,11 @@
 
 \section{Code}
 
-To avoid having code within this report, all code used for this project can be found on my GitHub in a public repository~\cite{project_repository}. \texttt{BST.py} contains a class \texttt{BST}. All methods related to my genome representation are implemented within that class. \texttt{main.py} is a driver and runs the genetic algorithm. Within \texttt{main.py}, we first define some hyper-parameters: \texttt{TREE\_SIZE=50, POP\_SIZE=45, GENERATIONS=500, SELECT\_PERC=0.3}. The agents are then initialized and evolved within the \texttt{ga()} function.
+To avoid having code within this report, all code used for this project can be found on my GitHub in a public repository~\cite{project_repository}. \texttt{BST.py} contains a class \texttt{BST}. All methods related to my genome representation are implemented within that class. \texttt{main.py} is a driver and runs the genetic algorithm. Within \texttt{main.py}, we first define some hyper-parameters: \texttt{TREE\_SIZE=100, POP\_SIZE=45, GENERATIONS=300, SELECT\_PERC=0.3}.
 
 \subsection{Search Space Representation}
 
- \texttt{BST} has an attribute called \texttt{nodes}, which represents the order in which each node was inserted to construct the BST. The constructor: \texttt{\_\_init\_\_(self, data)} takes a list of pairs of keys and frequencies, creates a node for each pair, and inserts each node into the BST.
+ \texttt{BST} has an attribute called \texttt{nodes}, which represents the order in which each node was inserted to construct the BST (used for recombination). The constructor: \texttt{\_\_init\_\_(self, data)} takes a list of pairs of keys and frequencies, creates a node for each pair, and inserts each node into the BST. Both keys and frequencies should take arbitrary values, so (unique) keys are simply generated from a range given the tree size, and a frequency for each key is a randomly generated integer between 0 and 10 inclusive. The set of keys is then re-shuffled (to create a random insertion order) to generate each new BST in the population.
 
  \subsection{Variation Operator Encoding}
 Crossover is implemented as a static method: \texttt{crossover(p1, p2)}. Given two parents, it produces a single child by the crossover process described in Section~\ref{sec-algorithm}.
@@ -14,4 +14,4 @@ Crossover is implemented as a static method: \texttt{crossover(p1, p2)}. Given t
 Selection is done in \texttt{main.py}. All agents are sorted by fitness, and the top 30\% are selected to move on to the next generation.
 
  \subsection{Termination Criterion}
-We only terminate when the optimal cost is reached. The actual optimal cost is calculated beforehand using a proven classical approach. However, the optimal is usually never found given the hyper-parameters.
+We only terminate when either the optimal cost is reached. The actual optimal cost is calculated beforehand using a proven classical approach. However, the optimal is usually never found given the hyper-parameters, so we terminate at 300 generations.
