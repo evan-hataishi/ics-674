@@ -47,10 +47,6 @@ def ga():
     optimal_cost = optBSTCost([x[0] for x in data], [x[1] for x in data], len(data))
 
     scores = []
-    best = None
-    average = None
-    worst = None
-    data = {}
 
     for generation in range(GENERATIONS):
         print("Generation: %d Population: %d" % (generation, len(agents)))
@@ -74,11 +70,7 @@ def ga():
         # mutation
         next_generation = [agent.mutate() for agent in next_generation]
 
-        agents = sorted(next_generation, key=lambda x: x.cost())
-
-        # best = agents[0]
-        # average = agents[int(POP_SIZE/2)]
-        # worst = agents[-1]
+        agents = next_generation
 
     print("Optimal BST Cost: %d" % optimal_cost)
 
@@ -96,6 +88,7 @@ def ga():
     # plt.show()
 
     # Save data to json
+    # data = {}
     # data['scores'] = scores
     # data['optimal'] = optimal_cost
     #
@@ -103,12 +96,6 @@ def ga():
     #     json.dump(data, f, ensure_ascii=False, indent=4)
 
 def main():
-    # data = generate_data()
-    # # Shuffle here
-    # print(data)
-    # t = BST(data)
-    # print(t)
-    # print(t.cost())
     ga()
 
 if __name__ == '__main__':
